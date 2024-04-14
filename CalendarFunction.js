@@ -19,8 +19,8 @@ let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oc
     ]
  };
 
-let headerMonths = document.getElementsByClassName('month')[0];
-let headerYears = document.getElementsByClassName('year')[0];
+let headMonths = document.getElementsByClassName('month')[0];
+let headYears = document.getElementsByClassName('year')[0];
 let next = document.getElementById('next');
 let prev = document.getElementById('prev');
 let selectYear = document.getElementById('year');
@@ -53,8 +53,8 @@ function showCalendar(month, year) {
     tbl.innerHTML = "";
 
     // filing data about month and in the page via DOM.
-    headerMonths.innerHTML = months[month];
-    headerYears.innerHTML = year;
+    headMonths.innerHTML = months[month];
+    headYears.innerHTML = year;
 
     // creating all cells
     let date = 1;
@@ -70,7 +70,7 @@ function showCalendar(month, year) {
                 cell.appendChild(cellText);
                 row.appendChild(cell);
             }
-            else if (date > daysInMonth(month, year)) {
+            else if (date > daysMonth(month, year)) {
                 break;
             }
 
@@ -112,6 +112,6 @@ function jump() {
 }
 
 
-function daysInMonth (month, year) {
+function daysMonth (month, year) {
     return new Date(year, month+1, 0).getDate();
 }
