@@ -7,18 +7,6 @@ let currentYear = today.getFullYear();
 
 let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
- //JSON event data
- let eventData = {
-    "events": [
-        {
-            "description": 'es',
-            "year": '2018',
-            "month": 'Nov',
-            "day": '28'
-        }
-    ]
- };
-
 let headMonths = document.getElementsByClassName('month')[0];
 let headYears = document.getElementsByClassName('year')[0];
 let next = document.getElementById('next');
