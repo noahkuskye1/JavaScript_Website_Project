@@ -1,30 +1,29 @@
 "use strict";
-//Calendar
+//This part is the calendar
+let thisday = new Date();
+let presentMonth = thisday.getMonth()+1;
+let presentYear = thisday.getFullYear();
 
-let today = new Date();
-let currentMonth = today.getMonth()+1;
-let currentYear = today.getFullYear();
+let calmonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-let headMonths = document.getElementsByClassName('month')[0];
-let headYears = document.getElementsByClassName('year')[0];
+let CalendarMonths = document.getElementsByClassName('month')[0];
+let CalendarYears = document.getElementsByClassName('year')[0];
 let next = document.getElementById('next');
 let prev = document.getElementById('prev');
-let selectYear = document.getElementById('year');
-let selectMonth = document.getElementById('month');
+let chooseMonth = document.getElementById('month');
+let chooseYear = document.getElementById('year');
 
-selectYear.value=currentYear;
-selectMonth.value=currentMonth;
+chooseMonth.value=presentMonth;
+chooseYear.value=presentYear;
 
-next.addEventListener('click', nextMonth);
-prev.addEventListener('click', previousMonth);
+next.addEventListener('click', monthAhead);
+prev.addEventListener('click', monthBehind);
 selectYear.addEventListener('input', (event)=> {
     if(event.keyCode == 13) {
         event.preventDefault();
         return false;
     } else {
-        jump();
+        transition();
     }
 })
 selectMonth.addEventListener('change', jump);
@@ -40,12 +39,8 @@ function showCalendar(month, year) {
     // clearing all previous cells
     tbl.innerHTML = "";
 
-    // filing data about month and in the page via DOM.
-    headMonths.innerHTML = months[month];
-    headYears.innerHTML = year;
-
     // creating all cells
-    let date = 1;
+    let d = 1;
     for (let i = 0; i < 6; i++) {
         // creates a table row
         let row = document.createElement("tr");
@@ -58,48 +53,39 @@ function showCalendar(month, year) {
                 cell.appendChild(cellText);
                 row.appendChild(cell);
             }
-            else if (date > daysMonth(month, year)) {
+            else if (d > daysInMonth(month, year)) {
                 break;
             }
-
             else {
                 let cell = document.createElement("td");
                 let cellText = document.createTextNode(date);
                 if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
-                    cell.classList.add("active"); // color today's date
+                    cell.classList.add("active"); //this shows that today's day is "active"
                 } 
                 cell.classList.add('day');
                 cell.appendChild(cellText);
                 row.appendChild(cell);
-                date++;
+                d++;
             }
-
-
         }
-
         tbl.appendChild(row); // appending each row into calendar body.
     }
 }
-
-function nextMonth() {
-    currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
-    currentMonth = (currentMonth + 1) % 12;
+function monthAhead() {
+    presentYear = (presentMonth === 11) ? presentYear + 1 : presentYear;
+    presentMonth = (presentMonth + 1) % 12;
+    showCalendar(presentMonth, presentYear);
+}
+function monthBehind() {
+    presentYear = (presentMonth === 0) ? presentYear - 1 : presentYear;
+    presentMonth = (presentMonth === 0) ? 11 : presentMonth - 1;
+    showCalendar(presentMonth, presentYear);
+}
+function transition() {
+    presentYear = parseInt(chooseYear.value);
+    presentMonth = parseInt(chooseMonth.value);
     showCalendar(currentMonth, currentYear);
 }
-
-function previousMonth() {
-    currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
-    currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
-    showCalendar(currentMonth, currentYear);
-}
-
-function jump() {
-    currentYear = parseInt(selectYear.value);
-    currentMonth = parseInt(selectMonth.value);
-    showCalendar(currentMonth, currentYear);
-}
-
-
-function daysMonth (month, year) {
+function daysWithinMonth (month, year) {
     return new Date(year, month+1, 0).getDate();
 }
